@@ -48,7 +48,6 @@ func TestSession(t *testing.T) {
 	port := nextPort()
 	go func() {
 		app := anoweb.New()
-		app.Config.Server.Host = "127.0.0.1"
 		app.Config.Server.Port = port
 		app.Get("/", func(ctx *context.Context) {
 			sessionCh <- middleware.GetSession(ctx).Id()
@@ -56,7 +55,7 @@ func TestSession(t *testing.T) {
 	}()
 	errCh := make(chan error, 1)
 	okCh := make(chan struct{}, 1)
-	time.AfterFunc(time.Millisecond*500, func() {
+	time.AfterFunc(time.Second*5, func() {
 		resp, err := http.Get(fmt.Sprintf("http://localhost:%d", port))
 		if err != nil {
 			errCh <- err
@@ -84,7 +83,7 @@ func TestSession(t *testing.T) {
 
 	})
 	select {
-	case <-time.After(time.Second):
+	case <-time.After(time.Second * 100):
 		t.Error("test fail: timeout")
 	case err := <-errCh:
 		t.Errorf("test err: %v", err)
@@ -107,7 +106,7 @@ func TestSessionRenew(t *testing.T) {
 	}()
 	errCh := make(chan error, 1)
 	okCh := make(chan struct{}, 1)
-	time.AfterFunc(time.Millisecond*500, func() {
+	time.AfterFunc(time.Second*5, func() {
 		resp, err := http.Get(fmt.Sprintf("http://localhost:%d", port))
 		if err != nil {
 			errCh <- err
@@ -138,7 +137,7 @@ func TestSessionRenew(t *testing.T) {
 		}
 	})
 	select {
-	case <-time.After(time.Second):
+	case <-time.After(time.Second * 100):
 		t.Error("test fail: timeout")
 	case err := <-errCh:
 		t.Errorf("test err: %v", err)
@@ -160,7 +159,7 @@ func TestSessionInvalidated(t *testing.T) {
 	}()
 	errCh := make(chan error, 1)
 	okCh := make(chan struct{}, 1)
-	time.AfterFunc(time.Millisecond*500, func() {
+	time.AfterFunc(time.Second*5, func() {
 		_, err := http.Get(fmt.Sprintf("http://localhost:%d", port))
 		if err != nil {
 			errCh <- err
@@ -171,7 +170,7 @@ func TestSessionInvalidated(t *testing.T) {
 		}
 	})
 	select {
-	case <-time.After(time.Second):
+	case <-time.After(time.Second * 100):
 		t.Error("test fail: timeout")
 	case err := <-errCh:
 		t.Errorf("test err: %v", err)
@@ -195,7 +194,7 @@ func TestSessionInvalidate(t *testing.T) {
 	}()
 	errCh := make(chan error, 1)
 	okCh := make(chan struct{}, 1)
-	time.AfterFunc(time.Millisecond*500, func() {
+	time.AfterFunc(time.Second*5, func() {
 		_, err := http.Get(fmt.Sprintf("http://localhost:%d", port))
 		if err != nil {
 			errCh <- err
@@ -211,7 +210,7 @@ func TestSessionInvalidate(t *testing.T) {
 		}
 	})
 	select {
-	case <-time.After(time.Second):
+	case <-time.After(time.Second * 100):
 		t.Error("test fail: timeout")
 	case err := <-errCh:
 		t.Errorf("test err: %v", err)
@@ -235,7 +234,7 @@ func TestSessionGet(t *testing.T) {
 	}()
 	errCh := make(chan error, 1)
 	okCh := make(chan struct{}, 1)
-	time.AfterFunc(time.Millisecond*500, func() {
+	time.AfterFunc(time.Second*5, func() {
 		_, err := http.Get(fmt.Sprintf("http://localhost:%d", port))
 		if err != nil {
 			errCh <- err
@@ -251,7 +250,7 @@ func TestSessionGet(t *testing.T) {
 		}
 	})
 	select {
-	case <-time.After(time.Second):
+	case <-time.After(time.Second * 100):
 		t.Error("test fail: timeout")
 	case err := <-errCh:
 		t.Errorf("test err: %v", err)
@@ -278,7 +277,7 @@ func TestSessionGetAll(t *testing.T) {
 	}()
 	errCh := make(chan error, 1)
 	okCh := make(chan struct{}, 1)
-	time.AfterFunc(time.Millisecond*500, func() {
+	time.AfterFunc(time.Second*5, func() {
 		_, err := http.Get(fmt.Sprintf("http://localhost:%d", port))
 		if err != nil {
 			errCh <- err
@@ -294,7 +293,7 @@ func TestSessionGetAll(t *testing.T) {
 		}
 	})
 	select {
-	case <-time.After(time.Second):
+	case <-time.After(time.Second * 100):
 		t.Error("test fail: timeout")
 	case err := <-errCh:
 		t.Errorf("test err: %v", err)
@@ -317,7 +316,7 @@ func TestSessionSet(t *testing.T) {
 	}()
 	errCh := make(chan error, 1)
 	okCh := make(chan struct{}, 1)
-	time.AfterFunc(time.Millisecond*500, func() {
+	time.AfterFunc(time.Second*5, func() {
 		_, err := http.Get(fmt.Sprintf("http://localhost:%d", port))
 		if err != nil {
 			errCh <- err
@@ -333,7 +332,7 @@ func TestSessionSet(t *testing.T) {
 		}
 	})
 	select {
-	case <-time.After(time.Second):
+	case <-time.After(time.Second * 100):
 		t.Error("test fail: timeout")
 	case err := <-errCh:
 		t.Errorf("test err: %v", err)
@@ -359,7 +358,7 @@ func TestSessionSetAll(t *testing.T) {
 	}()
 	errCh := make(chan error, 1)
 	okCh := make(chan struct{}, 1)
-	time.AfterFunc(time.Millisecond*500, func() {
+	time.AfterFunc(time.Second*5, func() {
 		_, err := http.Get(fmt.Sprintf("http://localhost:%d", port))
 		if err != nil {
 			errCh <- err
@@ -375,7 +374,7 @@ func TestSessionSetAll(t *testing.T) {
 		}
 	})
 	select {
-	case <-time.After(time.Second):
+	case <-time.After(time.Second * 100):
 		t.Error("test fail: timeout")
 	case err := <-errCh:
 		t.Errorf("test err: %v", err)
@@ -400,7 +399,7 @@ func TestSessionDel(t *testing.T) {
 	}()
 	errCh := make(chan error, 1)
 	okCh := make(chan struct{}, 1)
-	time.AfterFunc(time.Millisecond*500, func() {
+	time.AfterFunc(time.Second*5, func() {
 		_, err := http.Get(fmt.Sprintf("http://localhost:%d", port))
 		if err != nil {
 			errCh <- err
@@ -416,7 +415,7 @@ func TestSessionDel(t *testing.T) {
 		}
 	})
 	select {
-	case <-time.After(time.Second):
+	case <-time.After(time.Second * 100):
 		t.Error("test fail: timeout")
 	case err := <-errCh:
 		t.Errorf("test err: %v", err)
@@ -441,7 +440,7 @@ func TestSessionClear(t *testing.T) {
 	}()
 	errCh := make(chan error, 1)
 	okCh := make(chan struct{}, 1)
-	time.AfterFunc(time.Millisecond*500, func() {
+	time.AfterFunc(time.Second*5, func() {
 		_, err := http.Get(fmt.Sprintf("http://localhost:%d", port))
 		if err != nil {
 			errCh <- err
@@ -457,7 +456,7 @@ func TestSessionClear(t *testing.T) {
 		}
 	})
 	select {
-	case <-time.After(time.Second):
+	case <-time.After(time.Second * 100):
 		t.Error("test fail: timeout")
 	case err := <-errCh:
 		t.Errorf("test err: %v", err)

@@ -48,6 +48,7 @@ func TestSession(t *testing.T) {
 	port := nextPort()
 	go func() {
 		app := anoweb.New()
+		app.Config.Server.Host = "127.0.0.1"
 		app.Config.Server.Port = port
 		app.Get("/", func(ctx *context.Context) {
 			sessionCh <- middleware.GetSession(ctx).Id()
